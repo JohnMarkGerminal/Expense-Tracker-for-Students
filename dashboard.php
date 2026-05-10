@@ -1,28 +1,37 @@
-<?php include('db.php'); ?>
+<h2>My Expenses</h2>
+
+<table border="1" cellpadding="10">
+
+<tr>
+    <th>Date</th>
+    <th>Category</th>
+    <th>Amount</th>
+    <th>Description</th>
+</tr>
 
 <?php
 
-if(!isset($_SESSION['user_id'])){
-    header("Location: login.php");
-}
+$user_id = $_SESSION['user_id'];
 
+$query = mysqli_query($conn,"
+SELECT expenses.*, categories.category_name
+FROM expenses
+INNER JOIN categories
+ON expenses.category_id = categories.category_id
+WHERE expenses.user_id = '$user_id'
+ORDER BY expenses.date DESC
+");
+
+while($row = mysqli_fetch_array($query)){
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dashboard</title>
-</head>
-<body>
+<tr>
+    <td><?php echo $row['date']; ?></td>
+    <td><?php echo $row['category_name']; ?></td>
+    <td><?php echo $row['amount']; ?></td>
+    <td><?php echo $row['description']; ?></td>
+</tr>
 
-<h2>Welcome <?php echo $_SESSION['name']; ?></h2>
+<?php } ?>
 
-<a href="add_expense.php">Add Expense</a>
-<br><br>
-
-<a href="logout.php">Logout</a>
-
-
-
-</body>
-</html>
+</table>
