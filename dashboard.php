@@ -34,4 +34,11 @@ while($row = mysqli_fetch_array($query)){
 
 <?php } ?>
 
+<td>
+<a href="delete_expense.php?id=<?php echo $row['expense_id']; ?>"
+onclick="return confirm('Delete this expense?')">
+Delete
+</a>
+</td>
+
 </table>
